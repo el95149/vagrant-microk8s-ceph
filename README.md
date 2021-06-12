@@ -2,7 +2,7 @@
 
 A **WIP** three node sandbox/playground.
 
-##Dependencies
+## Dependencies
 - vagrant-omnibus plugin
 
 ## Procedure
