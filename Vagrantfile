@@ -1,3 +1,4 @@
+# encoding: utf-8
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 # Specify minimum Vagrant version and Vagrant API version
@@ -25,7 +26,7 @@ servers = [
   }
 ]
 properties = {
-  "masterNodeIP" => "10.0.0.100",
+  "masterNodeIP" => servers[0][:ip],
   "servers" => servers
 }
 
