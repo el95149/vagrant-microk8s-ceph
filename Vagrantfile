@@ -32,7 +32,6 @@ properties = {
 Vagrant.configure("2") do |config|
   ##### DEFINE VM #####
   config.omnibus.chef_version = '15.8.23' # Fix chef client version
-  config.omnibus.install_url = './chefinstall.sh'
 
   servers.each do |machine|
     config.vm.define machine[:hostname] do |server|
