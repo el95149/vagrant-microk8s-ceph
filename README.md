@@ -67,3 +67,34 @@ You should get something like this:
 
 **TIP:** Notice how the extra disks we attached to the VMs in the beginning of the process were automatically claimed by Ceph, because they werent partitioned/mounted! 
 
+## Post install *(Optional)* 
+
+Below are a few things you can try out, after finishing the installation & provisioning.
+
+### Access the Microk8s dashboard
+
+```shell
+$ vagrant ssh kube01
+$ microk8s kubectl -n kube-system describe secret $(microk8s kubectl -n kube-system get secret | grep default-token | cut -d " " -f1) | grep token: | sed 's/^[ \t]*//;s/[ \t]*$//'
+$ microk8s kubectl describe -n kube-system service kubernetes-dashboard | grep IP: | sed 's/^[ \t]*//;s/[ \t]*$//'
+$ exit
+```
+Copy the long token and the IP address,  you'll need them to log into the dashboard.
+
+Back on the host, start an SSH tunnel into the dashboard service on kube01:
+```shell
+$ ssh -p 2222 -N -L 127.0.0.1:10443:<IP copied in previous step>:443 vagrant@127.0.0.1
+```
+(The password for the above ^^ is 'vagrant')
+
+
+### Check Ceph status
+
+```shell
+$ vagrant ssh kube01
+$ microk8s kubectl -n rook-ceph exec -it deploy/rook-ceph-tools -- bash
+$ ceph status
+$ ceph osd status
+$ ceph df
+$ rados df
+```
