@@ -6,6 +6,7 @@ file "lockfile-microk8s-master" do
   action :create_if_missing
   notifies :run, "execute[microk8sAddons]", :immediately
   notifies :run, "execute[microk8sAddonsMaster]", :immediately
+  notifies :run, "execute[microk8sAdminUser]", :immediately
 end
 
 execute "microk8sAddons" do
@@ -15,5 +16,10 @@ end
 
 execute "microk8sAddonsMaster" do
   command "microk8s add-node --token-ttl 3600 --token 12345678901234567890123456789012"
+  action :nothing
+end
+
+execute "microk8sAdminUser" do
+  command "microk8s kubectl create -f /vagrant/admin-user.yaml"
   action :nothing
 end

@@ -75,7 +75,7 @@ Below are a few things you can try out, after finishing the installation & provi
 
 ```shell
 $ vagrant ssh kube01
-$ microk8s kubectl -n kube-system describe secret $(microk8s kubectl -n kube-system get secret | grep default-token | cut -d " " -f1) | grep token: | sed 's/^[ \t]*//;s/[ \t]*$//'
+$ microk8s kubectl -n kube-system get secret $(microk8s kubectl -n kube-system get sa/admin-user -o jsonpath="{.secrets[0].name}") -o go-template="{{.data.token | base64decode}}"
 $ microk8s kubectl describe -n kube-system service kubernetes-dashboard | grep IP: | sed 's/^[ \t]*//;s/[ \t]*$//'
 $ exit
 ```
@@ -86,7 +86,6 @@ Back on the host, start an SSH tunnel into the dashboard service on kube01:
 $ ssh -p 2222 -N -L 127.0.0.1:10443:<IP copied in previous step>:443 vagrant@127.0.0.1
 ```
 (The password for the above ^^ is 'vagrant')
-
 
 ### Check Ceph status
 
