@@ -67,6 +67,36 @@ You should get something like this:
 
 **TIP:** Notice how the extra disks we attached to the VMs in the beginning of the process were automatically claimed by Ceph, because they werent partitioned/mounted! 
 
+### Workaround for Rook bug
+Due to [this](https://github.com/rook/rook/issues/7817) bug (still open, at the time of composing this guide), you'll get failures if you try to create Ceph PVCs.
+
+To work around these, you'll need to make a small change to Rook's operator.yaml and re-apply it's configuration.
+
+```shell
+$ ssh kube1
+$ cd rook/cluster/examples/kubernetes/ceph/
+$ sudo vi operator.yaml
+```
+and change line 95 from:
+```shell
+  # ROOK_CSI_KUBELET_DIR_PATH: "/var/lib/kubelet"
+```
+to:
+```shell
+  ROOK_CSI_KUBELET_DIR_PATH: "/var/snap/microk8s/common/var/lib/kubelet"
+```
+and re-apply the operation config:
+```shell
+$ microk8s kubectl apply -f operator.yaml
+```
+You'll get a warning or two, but don't worry.
+
+Verify the changes:
+```shell
+$ microk8s kubectl -n rook-ceph get configmap rook-ceph-operator-config -o jsonpath='{.data.ROOK_CSI_KUBELET_DIR_PATH}'
+```
+You should get the updated directory printed out. Now you can safely create Ceph PVCs.
+
 ## Post install *(Optional)* 
 
 Below are a few things you can try out, after finishing the installation & provisioning.
