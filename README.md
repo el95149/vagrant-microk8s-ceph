@@ -1,6 +1,6 @@
-# Vagrant/Chef based MicroK8s + Ceph cluster #
+# Vagrant/Chef based MicroK8s + Ceph Kubernetes cluster #
 
-A **WIP** three node sandbox/playground. Inspired by [this](https://jonathangazeley.com/2020/09/10/building-a-hyperconverged-kubernetes-cluster-with-microk8s-and-ceph/) beautiful blog article, kudos to Jonathan Gazeley.
+A three node Kubernetes cluster, for sandbox/playground purposes. Inspired by [this](https://jonathangazeley.com/2020/09/10/building-a-hyperconverged-kubernetes-cluster-with-microk8s-and-ceph/) beautiful blog article, kudos to Jonathan Gazeley.
 
 ## Dependencies
 - A (preferably) *nix based host system
